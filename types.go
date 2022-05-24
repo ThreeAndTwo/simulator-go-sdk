@@ -25,6 +25,11 @@ type TxSimulate struct {
 	GasTips          string           `json:"gas_tips"`
 	Value            string           `json:"value"`
 	AccessList       types.AccessList `json:"access_list"`
+	Overrides        txOverrides      `json:"overrides"`
+}
+
+type txOverrides struct {
+	BlockNum uint64 `json:"block_num"`
 }
 
 type NodeRes struct {

@@ -116,6 +116,14 @@ func (es *evmSimulator) SimulateTx(tx *TxSimulate) (string, error) {
 		return "", err
 	}
 
+	if tx.Overrides.BlockNum != 0 {
+		err = es.api.Reset(tx.Overrides.BlockNum)
+		if err != nil {
+			return "", err
+		}
+		tx.BlockNumber = tx.Overrides.BlockNum
+	}
+
 	if err = es.autoMine(tx); err != nil {
 		return "", err
 	}
@@ -247,8 +255,8 @@ func (es *evmSimulator) Mine(count uint64) (err error) {
 	return
 }
 
-func (es *evmSimulator) ResetBlockNumber(count uint64) error {
-	return es.api.Reset(count)
+func (es *evmSimulator) ResetBlockNumber(blockNum uint64) error {
+	return es.api.Reset(blockNum)
 }
 
 func (es *evmSimulator) SetBalance(account common.Address) error {
@@ -264,12 +272,12 @@ func (es *evmSimulator) NonceAt(account common.Address, blockNum *big.Int) (uint
 	return es.client.NonceAt(context.Background(), account, blockNum)
 }
 
-func (es *evmSimulator) BalanceAt(account common.Address) (float64, error) {
+func (es *evmSimulator) BalanceAt(account common.Address, blockNum *big.Int) (float64, error) {
 	if !es.checkAddress(account) {
 		return 0, ErrAddress
 	}
 
-	balanceAt, err := es.client.BalanceAt(context.Background(), account, nil)
+	balanceAt, err := es.client.BalanceAt(context.Background(), account, blockNum)
 	if err != nil {
 		return 0, err
 	}

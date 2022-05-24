@@ -10,10 +10,10 @@ type (
 		SimulateTx(tx *TxSimulate) (string, error)
 		DebuggerTx(txHash []string) (string, error)
 		Mine(count uint64) error
-		ResetBlockNumber(uint64) error
-		SetBalance(common.Address) error
+		ResetBlockNumber(blockNum uint64) error
+		SetBalance(account common.Address) error
 		BlockNumber() (uint64, error)
-		BalanceAt(common.Address) (float64, error)
+		BalanceAt(account common.Address, blockNum *big.Int) (float64, error)
 		NonceAt(account common.Address, blockNum *big.Int) (uint64, error)
 
 		SuggestGasPrice() (*big.Int, error)

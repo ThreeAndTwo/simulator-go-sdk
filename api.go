@@ -16,10 +16,10 @@ func newHApi(url string, header map[string]string) *hApi {
 	return &hApi{api, url, header}
 }
 
-func (h *hApi) Reset(count uint64) error {
-	h.url = fmt.Sprintf("%s/v1/reset", h.url)
+func (h *hApi) Reset(blockNum uint64) error {
+	h.api.Url = fmt.Sprintf("%s/v1/reset", h.url)
 	h.api.Params = req.Param{
-		"blockNumber": count,
+		"blockNumber": blockNum,
 	}
 
 	_, err := h.api.Request(PostTy)
